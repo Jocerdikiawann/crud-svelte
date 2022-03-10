@@ -29,22 +29,14 @@
 			name: name,
 			class: clas
 		};
-		await postMahasiswa(data).then(() => {
-			getMahasiswa();
-		});
+		await postMahasiswa(data);
 		name = '';
 		nim = '';
 		clas = '';
 	}
 
 	async function handleDelte(id) {
-		await delMahasiswa(id).then(() => {
-			getMahasiswa();
-		});
-	}
-
-	if ($showAlert) {
-		alert('Success!');
+		await delMahasiswa(id);
 	}
 </script>
 
@@ -53,7 +45,7 @@
 </svelte:head>
 
 <div class="todos">
-	<h1>Add Mahasiswa</h1>
+	<h1>Mahasiswa</h1>
 
 	<form class="new" on:submit={handleSubmit}>
 		<input name="text" aria-label="Add todo" placeholder="name" bind:value={name} />

@@ -17,9 +17,14 @@ export const getMahasiswa = async () => {
 	}
 }
 
-export const postMahasiswa = async (data) => {
-	const response = await api('post', 'mahasiswa', data)
-	if (response.ok) return showAlert.set(true)
+export const postMahasiswa = async (body) => {
+	const response = await api('post', 'mahasiswa', body)
+	const data = await response.json()
+	if (response.ok) {
+		allMahasiswa.set(data.data)
+		return showAlert.set(true)
+	}
+	allMahasiswa.set([])
 	return showAlert.set(false)
 }
 
@@ -31,7 +36,11 @@ export const putMahasiswa = async (data) => {
 
 export const delMahasiswa = async (id) => {
 	const response = await api('delete', `mahasiswa/${id}`)
-	if (response.ok) return showAlert.set(true)
+	const data = await response.json()
+	if (response.ok) {
+		allMahasiswa.set(data.data)
+		return showAlert.set(true)
+	}
 	return showAlert.set(false)
 }
 
