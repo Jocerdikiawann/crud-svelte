@@ -1,82 +1,29 @@
 <script>
-	import { enhance } from '$lib/form';
-	import { scale, fade } from 'svelte/transition';
-	import { flip } from 'svelte/animate';
-	import {
-		allMahasiswa,
-		showAlert,
-		postMahasiswa,
-		getMahasiswa,
-		delMahasiswa
-	} from '../../store/mahasiswa-store';
-	import { onMount } from 'svelte';
+	import { createEventDispatcher } from 'svelte';
+	import { scale } from 'svelte/transition';
 
+	const dispatch = createEventDispatcher();
 	let name, nim, clas;
-
-	onMount(async () => {
-		console.log('onMount');
-		await getMahasiswa();
-	});
-
-	$: $allMahasiswa.sort((a, b) => {
-		return a.nim - b.nim;
-	});
-
-	async function handleSubmit(event) {
-		event.preventDefault();
-		const data = {
-			nim: nim,
+	export function handleSubmitForm() {
+		dispatch('callback', {
 			name: name,
+			nim: nim,
 			class: clas
-		};
-		await postMahasiswa(data);
-		name = '';
-		nim = '';
-		clas = '';
-	}
-
-	async function handleDelte(id) {
-		await delMahasiswa(id);
+		});
 	}
 </script>
 
-<svelte:head>
-	<title>Todos</title>
-</svelte:head>
-
-<div class="todos" transition:scale|local={{ start: 0.7 }}>
-	<h1>Mahasiswa</h1>
-
-	<form class="new" on:submit={handleSubmit}>
+<div class="todos">
+	<form class="new" on:submit={handleSubmitForm} transition:scale|local={{ start: 0.7 }}>
 		<input name="text" aria-label="Add todo" placeholder="name" bind:value={name} />
 		<input name="text" aria-label="Add todo" placeholder="nim" bind:value={nim} />
 		<input name="text" aria-label="Add todo" placeholder="class" bind:value={clas} />
-		<button type="submit" class="submiter" aria-label="Save todo">Submit</button>
+		<button type="submit" class="submiter" aria-label="Save todo">Save</button>
 	</form>
-
-	{#each $allMahasiswa as mhs (mhs._id)}
-		<div class="todo" transition:scale|local={{ start: 0.7 }} animate:flip={{ duration: 200 }}>
-			<form class="text">
-				<input aria-label="Edit todo" type="text" name="nim" bind:value={mhs.nim} disabled />
-				<input aria-label="Edit todo" type="text" name="name" bind:value={mhs.name} disabled />
-				<input aria-label="Edit todo" type="text" name="class" bind:value={mhs.class} disabled />
-				<a aria-label="Save todo" href={`mahasiswa/${mhs._id}`}>Detail</a>
-			</form>
-			<br />
-
-			<button
-				class="delete"
-				type="submit"
-				aria-label="Delete todo"
-				on:click={() => {
-					handleDelte(mhs._id);
-				}}
-			/>
-		</div>
-	{/each}
 </div>
 
 <style>
+	/* your styles go here */
 	.todos {
 		width: 100%;
 		max-width: var(--column-width);

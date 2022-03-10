@@ -17,21 +17,29 @@ export const getMahasiswa = async () => {
 	}
 }
 
+export const getMahasiswaById = async (id) => {
+	try {
+		const response = await api('get', `mahasiswa/${id}`)
+		const data = await response.json()
+		if (response.ok) return detailMahasiswa.set(data.data)
+		return detailMahasiswa.set({})
+	} catch (error) {
+		throw new Error(error)
+	}
+}
+
 export const postMahasiswa = async (body) => {
 	const response = await api('post', 'mahasiswa', body)
 	const data = await response.json()
-	if (response.ok) {
-		allMahasiswa.set(data.data)
-		return showAlert.set(true)
-	}
-	allMahasiswa.set([])
-	return showAlert.set(false)
+	if (response.status == 201) return allMahasiswa.set(data.data)
+	return allMahasiswa.set([])
 }
 
-export const putMahasiswa = async (data) => {
-	const response = await api('put', 'mahasiswa', data)
-	if (response.ok) return showAlert.set(true)
-	return showAlert.set(false)
+export const putMahasiswa = async (id, body) => {
+	const response = await api('put', `mahasiswa/${id}`, body)
+	const data = await response.json()
+	if (response.status == 201) return detailMahasiswa.set(data.data)
+	return detailMahasiswa.set({})
 }
 
 export const delMahasiswa = async (id) => {
