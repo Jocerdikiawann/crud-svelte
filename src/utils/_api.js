@@ -11,8 +11,8 @@
 
 const base = 'http://localhost:3000/api/v1';
 
-export function api(method, resource, data) {
-	return fetch(`${base}/${resource}`, {
+export function api(method, endpoint, data) {
+	return fetch(`${base}/${endpoint}`, {
 		method,
 		headers: {
 			'content-type': 'application/json'

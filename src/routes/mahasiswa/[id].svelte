@@ -26,31 +26,41 @@
 	function toggleForm() {
 		showForm = !showForm;
 	}
-
-	$: mhs = $detailMahasiswa;
+	console.log($detailMahasiswa);
 </script>
 
 <svelte:head>
-	<title>Mahasiswa - {mhs.name}</title>
+	<title>Mahasiswa - {$detailMahasiswa.name}</title>
 </svelte:head>
 
 <div class="todos" transition:scale|local={{ start: 0.7 }}>
-	<h1>Mahasiswa - {mhs.name}</h1>
-	<div class="todo" transition:scale|local={{ start: 0.7 }}>
-		<form class="text">
-			<input aria-label="Edit todo" type="text" name="nim" bind:value={mhs.nim} disabled />
-			<input aria-label="Edit todo" type="text" name="name" bind:value={mhs.name} disabled />
-			<input aria-label="Edit todo" type="text" name="class" bind:value={mhs.class} disabled />
-			<!-- <button aria-label="Save todo" on:click={toggleForm}>{showForm}</button> -->
-		</form>
-	</div>
+	<h1>Mahasiswa - {$detailMahasiswa.name}</h1>
 
-	<form class="new" on:submit={handleUpdate} transition:scale|local={{ start: 0.7 }}>
-		<input name="text" aria-label="Add todo" placeholder={mhs.name} bind:value={name} />
-		<input name="text" aria-label="Add todo" placeholder={mhs.nim} bind:value={nim} />
-		<input name="text" aria-label="Add todo" placeholder={mhs.class} bind:value={clas} />
-		<button type="submit" class="submiter" aria-label="Save todo">Save</button>
-	</form>
+	<button class="submiter" aria-label="Save todo" on:click={toggleForm}>Show Form</button>
+
+	{#if showForm}
+		<form class="new" on:submit={handleUpdate} transition:scale|local={{ start: 0.7 }}>
+			<input
+				name="text"
+				aria-label="Add todo"
+				placeholder={$detailMahasiswa.name}
+				bind:value={name}
+			/>
+			<input
+				name="text"
+				aria-label="Add todo"
+				placeholder={$detailMahasiswa.nim}
+				bind:value={nim}
+			/>
+			<input
+				name="text"
+				aria-label="Add todo"
+				placeholder={$detailMahasiswa.class}
+				bind:value={clas}
+			/>
+			<button type="submit" class="submiter" aria-label="Save todo">Save</button>
+		</form>
+	{/if}
 </div>
 
 <style>
@@ -91,6 +101,7 @@
 		font-size: 15px;
 		width: 100%;
 		padding: 10px;
+		margin-bottom: 10px;
 		margin-top: 10px;
 		border-radius: 8px;
 		border-color: gray;

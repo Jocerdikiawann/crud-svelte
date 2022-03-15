@@ -10,6 +10,7 @@
 		delMahasiswa
 	} from '../../store/mahasiswa-store';
 	import { onMount } from 'svelte';
+	
 
 	let name, nim, clas;
 
